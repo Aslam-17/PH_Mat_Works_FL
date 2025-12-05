@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Login - Mats System</title>
+  <link rel="stylesheet" href="/styles/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="card login-form">
+      <h2>Login to Mats System</h2>
+      <% if (typeof error !== 'undefined') { %>
+        <div class="error"><%= error %></div>
+      <% } %>
+      <form action="/auth/login" method="POST">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+
+        <label for="role">Role</label>
+        <select id="role" name="role" required>
+          <option value="">-- Select Role --</option>
+          <option value="admin">Admin</option>
+          <option value="worker">Worker</option>
+        </select>
+
+        <button class="btn" type="submit">Login</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

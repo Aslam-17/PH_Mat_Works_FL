@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Worker Console - Mats System</title>
+  <link rel="stylesheet" href="/styles/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h2>Worker Console</h2>
+    <div class="header-right">
+      <span><%= user.username %> (Worker)</span>
+      <a href="/auth/logout" class="btn small">Logout</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h3>Your Assigned Work</h3>
+      <div id="workerTasks" class="tasks-list">
+        <!-- dynamic -->
+      </div>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/client.js"></script>
+</body>
+</html>
+ +
