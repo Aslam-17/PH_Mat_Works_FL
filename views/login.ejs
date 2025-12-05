@@ -1,34 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <title>Login - Mats System</title>
-  <link rel="stylesheet" href="/styles/styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Korai Mats Workboard</title>
+  <link rel="stylesheet" href="/public/styles/styles.css" />
 </head>
+
 <body>
-  <main class="container">
-    <section class="card login-form">
-      <h2>Login to Mats System</h2>
-      <% if (typeof error !== 'undefined') { %>
-        <div class="error"><%= error %></div>
-      <% } %>
-      <form action="/auth/login" method="POST">
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" required />
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo-circle">
+          <div class="logo-lines"><img src="/public/images/logo.jpg" class="circle-img"></div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">PH Mat Works</span>
+          <span class="brand-subtitle">Crafted with care</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
+  <main class="layout">
+    <!-- Branding Panel (will be hidden after login) -->
+    <section class="panel panel-left">
+      <h1 class="hero-title">Keep your Korai mat orders organised.</h1>
+      <p class="hero-text">
+        A simple board for assigning work, tracking deadlines and marking jobs
+        as completed — built for small mat workshops.
+      </p>
+      <ul class="hero-list">
+        <li>Assign work to each worker</li>
+        <li>Track quantity, deadline & customer name</li>
+        <li>Workers tick jobs once they finish</li>
+      </ul>
+      <div class="hero-visual">
+        <div class="mat-card">
+          <div class="mat-header">✨ Heritage ✨</div>
+          <div class="mat-body">
+            <div class="mat-row">
+              <span class="mat-label">A good mat lasts years. A good worker leaves a legacy</span>
+              <span class="mat-badge"></span>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <p class="hero-footer">Made for PH Riyaz · Crafted with care</p>
+    </section>
 
-        <label for="role">Role</label>
-        <select id="role" name="role" required>
-          <option value="">-- Select Role --</option>
-          <option value="admin">Admin</option>
-          <option value="worker">Worker</option>
-        </select>
+    <!-- Right: All app panels -->
+    <section class="panel panel-right">
 
-        <button class="btn" type="submit">Login</button>
-      </form>
+      <!-- LOGIN SECTION -->
+      <section id="login-section" class="card card-login">
+        <h2 class="card-title">Sign in</h2>
+        <form id="login-form" class="form">
+          <div class="role-row">
+            <label class="role-pill">
+              <input type="radio" name="role" value="admin" checked />
+              <span>Admin</span>
+            </label>
+            <label class="role-pill">
+              <input type="radio" name="role" value="worker" />
+              <span>Worker</span>
+            </label>
+          </div>
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" type="text" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Sign in</button>
+        </form>
+        <p id="login-msg" class="message"></p>
+      </section>
+
+      <!-- ADMIN DASHBOARD WRAPPER -->
+      <div id="admin-wrapper" class="admin-dashboard hidden">
+
+        <!-- Admin Console Section -->
+        <section id="admin-section" class="card card-dashboard">
+          <header class="dash-header">
+            <div>
+              <h2 class="card-title">Admin Console</h2>
+              <p class="dash-subtitle">Assign work and follow progress.</p>
+            </div>
+            <button id="logout-admin" class="btn btn-ghost">Logout</button>
+          </header>
+
+          <div class="grid-two">
+            <!-- Predetermined types -->
+            <div class="card subcard">
+              <h3 class="subcard-title">Predetermined work types</h3>
+              <ul id="pred-list" class="tag-list"></ul>
+              <form id="add-pred-form" class="inline-form">
+                <input id="pred-name" type="text" placeholder="Add new type (eg. plain mat)" />
+                <button type="submit" class="btn btn-secondary">Add</button>
+              </form>
+            </div>
+
+            <!-- Create & assign -->
+            <div class="card subcard">
+              <h3 class="subcard-title">Create & assign work</h3>
+              <form id="add-work-form" class="form-compact">
+                <div class="field">
+                  <label for="work-type-select">Work type</label>
+                  <select id="work-type-select"></select>
+                </div>
+                <div class="field-inline">
+                  <div class="field">
+                    <label for="work-qty">Quantity</label>
+                    <input id="work-qty" type="number" min="1" />
+                  </div>
+                  <div class="field">
+                    <label for="work-deadline">Deadline</label>
+                    <input id="work-deadline" type="date" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="work-customer">Customer name</label>
+                  <input id="work-customer" type="text" />
+                </div>
+                <div class="field">
+                  <label for="work-assignee">Assign to worker (username)</label>
+                  <input id="work-assignee" type="text" placeholder="eg. worker1" />
+                </div>
+                <button type="submit" class="btn btn-primary full-width">Create & assign</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Work Table -->
+        <section class="card card-dashboard">
+          <div class="table-block">
+            <h3 class="subcard-title">Work in progress</h3>
+            <div class="table-wrapper">
+              <table id="admin-work-table" class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Qty</th>
+                    <th>Deadline</th>
+                    <th>Customer</th>
+                    <th>Worker</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- WORKER DASHBOARD WRAPPER -->
+      <div id="worker-wrapper" class="worker-dashboard hidden">
+        <section id="worker-section" class="card card-dashboard">
+          <header class="dash-header">
+            <div>
+              <h2 class="card-title">Worker Console</h2>
+              <p id="worker-welcome" class="dash-subtitle"></p>
+            </div>
+            <button id="logout-worker" class="btn btn-ghost">Logout</button>
+          </header>
+
+          <div class="table-block">
+            <h3 class="subcard-title">Your assigned work</h3>
+            <div class="table-wrapper">
+              <table id="worker-work-table" class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Qty</th>
+                    <th>Deadline</th>
+                    <th>Customer</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
     </section>
   </main>
+
+  <script src="/public/js/main.js" type="module"></script>
 </body>
 </html>

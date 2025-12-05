@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "username": "admin",
+      "password": "leo",
+      "role": "admin"
+    },
+    {
+      "username": "worker1",
+      "password": "kei",
+      "role": "worker"
+    },
+    {
+      "username": "worker2",
+      "password": "manager",
+      "role": "worker"
+    }
+  ],
+  "predetermined": [
+    "plain mat"
+  ],
+  "works": [],
+  "nextWorkId": 8
+}
