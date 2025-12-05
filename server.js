@@ -1,19 +1,24 @@
-// server.js
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
-const VOLUME_MOUNT = process.env.RAILWAY_VOLUME_MOUNT_PATH || process.env.VOLUME_MOUNT_PATH || null;
-const DATA_DIR = VOLUME_MOUNT ? VOLUME_MOUNT : __dirname;
-const DATA_FILE = path.join(DATA_DIR, 'data.json')
+
+// define __filename/__dirname first (ESM)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DATA_FILE = path.join(__dirname, 'data.json');
+// volume mount (if provided), otherwise use __dirname
+const VOLUME_MOUNT = process.env.RAILWAY_VOLUME_MOUNT_PATH || process.env.VOLUME_MOUNT_PATH || null;
+const DATA_DIR = VOLUME_MOUNT ? VOLUME_MOUNT : __dirname;
+
+// single DATA_FILE declaration (only once)
+const DATA_FILE = path.join(DATA_DIR, 'data.json');
 
 const app = express();
+// ... rest of code unchanged ...
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
