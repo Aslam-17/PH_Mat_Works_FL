@@ -5,7 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
-
+const VOLUME_MOUNT = process.env.RAILWAY_VOLUME_MOUNT_PATH || process.env.VOLUME_MOUNT_PATH || null;
+const DATA_DIR = VOLUME_MOUNT ? VOLUME_MOUNT : __dirname;
+const DATA_FILE = path.join(DATA_DIR, 'data.json')
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
