@@ -134,9 +134,9 @@ function renderWorkerTable(works) {
   assigned.forEach(w => {
     const tr = document.createElement('tr');
 
-    const completeBtn = w.status !== 'completed'
+    const actionCell = w.status !== 'completed'
       ? `<button class="complete-btn" data-id="${w.id}">Mark complete</button>`
-      : '';
+      : `<span class="badge done">Completed</span>`;   // <-- show badge instead of blank
 
     tr.innerHTML = `
       <td>${w.id}</td>
@@ -144,11 +144,12 @@ function renderWorkerTable(works) {
       <td>${w.qty}</td>
       <td>${escapeHtml(w.deadline)}</td>
       <td>${escapeHtml(w.customer)}</td>
-      <td>${completeBtn}</td>
+      <td>${actionCell}</td>
     `;
     workerBody.appendChild(tr);
   });
 }
+
 
 // Attach delegated listeners (one-time)
 function attachDelegatedListeners() {
