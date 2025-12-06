@@ -206,6 +206,8 @@ app.post('/api/work/:id/delete', async (req, res) => {
 });
 
 // start
-const PORT = process.env.PORT || 3000;
+// start
+const PORT = process.env.PORT || 8080;  // <-- default 8080
 await initData();
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
