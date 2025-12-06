@@ -143,6 +143,15 @@ app.post('/api/work', async (req, res) => {
     res.status(500).json({ error: 'server error' });
   }
 });
+// TEMP: debug users on the deployed instance
+app.get('/debug/users', async (req, res) => {
+  try {
+    const data = await readData();
+    res.json({ DATA_FILE, users: data.users || [] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // worker marks complete
 app.post('/api/work/:id/complete', async (req, res) => {
