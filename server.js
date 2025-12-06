@@ -60,23 +60,45 @@ app.get('/', (req, res) => {
 // APIs
 
 // login
+
+// login (case-insensitive, safer)
 app.post('/api/login', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
-    if (!username || !password || !role) return res.status(400).json({ error: 'missing fields' });
-
-    const data = await readData();
-    const user = data.users.find(u => u.username === username && u.role === role);
-    if (!user || user.password !== password) {
-      return res.status(401).json({ error: 'Invalid credentials or role' });
+    let { username, password, role } = req.body;
+    if (!username || !password || !role) {
+      return res.status(400).json({ error: 'missing fields' });
     }
 
+    // normalise input
+    username = String(username).trim();
+    password = String(password);
+    role = String(role).trim().toLowerCase();
+
+    const data = await readData();
+
+    // find user by username only, case-insensitive
+    const user = (data.users || []).find(
+      u => String(u.username).trim().toLowerCase() === username.toLowerCase()
+    );
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'Invalid credentials or password' });
+    }
+
+    // optional: check role matches (case-insensitive), but don't block login hard
+    if (user.role && user.role.toLowerCase() !== role) {
+      // still allow login but tell client the real role
+      return res.json({ user: { username: user.username, role: user.role } });
+    }
+
+    // success
     return res.json({ user: { username: user.username, role: user.role } });
   } catch (err) {
     console.error('/api/login error', err);
     res.status(500).json({ error: 'server error' });
   }
 });
+
 
 // get state (predetermined + works)
 app.get('/api/state', async (req, res) => {
