@@ -287,11 +287,17 @@ async function onAddWork(e) {
 
 function logout() {
   currentUser = null;
+  // Show login form and left panel again
   document.getElementById('login-section').classList.remove('hidden');
-  document.getElementById('admin-section').classList.add('hidden');
-  document.getElementById('worker-section').classList.add('hidden');
+  document.querySelector('.panel-left').classList.remove('hidden');  // show branding panel
+
+  // Hide the entire admin and worker dashboards
+  document.getElementById('admin-wrapper').classList.add('hidden');
+  document.getElementById('worker-wrapper').classList.add('hidden');
+
   document.getElementById('login-msg').textContent = '';
 }
+
 
 // small helper to avoid XSS in table rendering
 function escapeHtml(str) {
